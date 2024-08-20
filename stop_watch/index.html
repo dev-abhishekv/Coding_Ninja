@@ -13,22 +13,28 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="container">
+        <!-- Having the Theme Toggle Button -->
         <header>
-            <div id="btn-theme-toogle">
-                <i class="fa-solid fa-sun"></i>
-                <i class="fa-solid fa-moon"></i>
+            <div id="btn-theme-toogle" class="d-flex">
+                <button class="btn"><i class="fa-solid fa-sun"></i></button>
+                <!-- <button class="btn"><i class="fa-solid fa-moon"></i></button> -->
             </div>
         </header>
         <main>
+            <!-- Timer (Round Stop-Watch) -->
             <section id="timer-container" class="d-flex">
                 <div id="timer-wrapper" class="libre-baskerville-bold d-flex"><span id="timer"></span><span id="millisec-container"></span></div>
             </section>
+
+            <!-- Laps Container -->
             <section id="laps-container" class="d-flex">
                 <div id="laps-container-wrapper">
                     <div class="lap-detail" id="lap-header"><span>Lap</span><span>Time</span></div>
                 </div>
             </section>
+
+            <!-- Controller (Buttons) -->
             <section id="controller" class="d-flex">
                 <button id="laps" class="btn" disabled><i class="fa-solid fa-flag"></i></button>
                 <button id="play" class="btn"><i class="fa-solid fa-play"></i></button>

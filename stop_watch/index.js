@@ -15,20 +15,29 @@ let intervalId = -1;
 // Track stopwatch running status
 let isActive = false
 
+// Track DarkMode
+let isDark = false
+
 // Initialize presentTime with initial time
 let presentTime = {...initialTime}
 
 // Document element selection
 const body = document.querySelector("body")
-const playBtn = document.getElementById("play")
-const lapsBtn = document.getElementById("laps")
-const resetBtn = document.getElementById("reset")
+const main_container = document.getElementById("container")
+
+const themeToggler = document.getElementById("btn-theme-toogle")
+
+const timerWrapper = document.getElementById("timer-wrapper")
 const timer = document.getElementById("timer")
 const milli_secs_container = document.getElementById("millisec-container")
-const playBtnIcon = playBtn.querySelector("i")
 const lap_container = document.querySelector("#laps-container")
 const lap_container_wrapper = document.querySelector("#laps-container-wrapper")
+
 const controller = document.querySelector("#controller")
+const playBtn = document.getElementById("play")
+const playBtnIcon = playBtn.querySelector("i")
+const lapsBtn = document.getElementById("laps")
+const resetBtn = document.getElementById("reset")
 
 // Display the initial Timer value (HH:MM:SS) on the clock
 timer.innerText = `${initialTime["hours"].toString().padStart(2, '0')}:${initialTime["mins"].toString().padStart(2, '0')}:${initialTime["secs"].toString().padStart(2, '0')}`
@@ -58,7 +67,7 @@ function displayTimer({hours, mins, secs, milli_secs}){
 function updateTimer(){
     presentTime["milli_secs"] += 1
 
-    if(presentTime["milli_secs"] > 999){
+    if(presentTime["milli_secs"] > 100){
         presentTime["secs"] += 1
         presentTime["milli_secs"] = 0
         if (presentTime["secs"] > 59){
@@ -95,7 +104,7 @@ function intervalStatus(intervalTimerInstance){
     // stop-watch not started/paused want to start it
     else{
         // Start the timer
-        intervalTimerInstance = setInterval(updateTimer)
+        intervalTimerInstance = setInterval(updateTimer, 0)
         
         // Change play icon to pause
         playBtnIcon.classList.remove("fa-play")
@@ -116,16 +125,28 @@ function intervalStatus(intervalTimerInstance){
 // Set click event on play button
 playBtn.addEventListener("click", ()=>{
     intervalId = intervalStatus(intervalId)
+    // Control animation based on stopwatch on or off
+    timerWrapper.classList.toggle("animation-shadow")
 })
 
 // ------------------------ //
 //    Laps Functionality
 // ------------------------ //
-// Control Overflow of lap container
-lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top}px`;
+// Control Overflow of lap detail container by dynamically calculating its max-height
+// Calculate max-height first time when the app loads.
+window.addEventListener('DOMContentLoaded', ()=>{
+    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top}px`;
+});
+
+// Calculate max-height whenever screen size is altered
+window.addEventListener('resize', () => {
+    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top}px`;
+})
+
 
 function lapHandling(){
     // <div class="lap-detail"><span>1</span><span>20:20:20:203</span></div>
+
     const lap_detail_container = document.createElement("div")
     lap_detail_container.setAttribute("class", "lap-detail record")
 
@@ -139,8 +160,6 @@ function lapHandling(){
     lap_detail_container.appendChild(lap_time_container)
 
     lap_container_wrapper.appendChild(lap_detail_container)
-
-    console.log(lap_container_wrapper.children)
 }
 
 lapsBtn.addEventListener("click", ()=>{
@@ -163,6 +182,9 @@ function resetAll(){
     isActive = false
     intervalId = -1
     initialLap = 0
+
+    // Stop Animation
+    timerWrapper.classList.remove("animation-shadow")
 
     // Sets the timers HR:MM:SS to initial values
     timer.innerText = `${initialTime["hours"].toString().padStart(2, '0')}:${initialTime["mins"].toString().padStart(2, '0')}:${initialTime["secs"].toString().padStart(2, '0')}`
@@ -195,3 +217,24 @@ function resetAll(){
 
 // Adding click event to reset button
 resetBtn.addEventListener("click", ()=>resetAll())
+
+// ------------------------ //
+// Theme Control Functionality
+// ------------------------ //
+themeToggler.addEventListener("click", ()=>{
+    isDark = !isDark
+    themeToggler.classList.toggle("flex-end")
+    main_container.classList.toggle("dark-mode")
+
+    let themeIcon = themeToggler.querySelector("i")
+    
+    if(isDark){
+        themeIcon.classList.remove("fa-sun")
+        themeIcon.classList.add("fa-moon")
+        themeToggler.style.backgroundColor = 'black'
+    } else {
+        themeIcon.classList.remove("fa-moon")
+        themeIcon.classList.add("fa-sun")
+        themeToggler.style.backgroundColor = 'gold'
+    }
+})

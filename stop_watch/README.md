@@ -8,3 +8,9 @@ I have taken reference for the desgin from Microsoft StopWatch, Realme 7 Pro Sto
 * Using plain CSS for styling.
 * Using Vanilla JS for functionality.
 * No framework used.
+
+## Functionality
+* Play/Pause
+* Reset
+* Lap Capturing
+* Dark Mode Support

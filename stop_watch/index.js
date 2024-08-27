@@ -79,6 +79,15 @@ function updateTimer(){
             }
         }
     }
+    // presentTime["secs"] += 1
+    // if (presentTime["secs"] > 59){
+    //     presentTime["secs"] = 0
+    //     presentTime["mins"] +=1
+    //     if (presentTime["mins"] > 59){
+    //         presentTime["hours"]+=1
+    //         presentTime["mins"] = 0
+    //     }
+    // }
     displayTimer(presentTime)
 }
 
@@ -104,7 +113,7 @@ function intervalStatus(intervalTimerInstance){
     // stop-watch not started/paused want to start it
     else{
         // Start the timer
-        intervalTimerInstance = setInterval(updateTimer, 0)
+        intervalTimerInstance = setInterval(updateTimer, 10)
         
         // Change play icon to pause
         playBtnIcon.classList.remove("fa-play")
@@ -135,12 +144,12 @@ playBtn.addEventListener("click", ()=>{
 // Control Overflow of lap detail container by dynamically calculating its max-height
 // Calculate max-height first time when the app loads.
 window.addEventListener('DOMContentLoaded', ()=>{
-    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top}px`;
+    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top -30}px`;
 });
 
 // Calculate max-height whenever screen size is altered
 window.addEventListener('resize', () => {
-    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top}px`;
+    lap_container.style.maxHeight = `${controller.getBoundingClientRect().top - lap_container.getBoundingClientRect().top -30}px`;
 })
 
 
